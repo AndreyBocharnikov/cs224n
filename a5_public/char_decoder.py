@@ -97,12 +97,12 @@ class CharDecoder(nn.Module):
         hidden_state_init, cell_state_init = initialStates
         next_state = initialStates
         _, batch_size, hidden_size = hidden_state_init.shape
-        input = torch.Tensor([[self.target_vocab.start_of_word] * batch_size], device=device).long()
+        input = torch.Tensor([[self.target_vocab.start_of_word] * batch_size]).long().to(device)
         tmp = []
         for i in range(max_length):
             scores, next_state = self.forward(input, next_state)
             input = torch.argmax(scores, dim=2)
-            tmp.append(input.squeeze(dim=0).numpy())
+            tmp.append(input.squeeze(dim=0).cpu().numpy())
         tmp = torch.Tensor(tmp).permute(1, 0).numpy()
         decodedWords = []
         for sample in range(batch_size):

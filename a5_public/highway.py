@@ -44,6 +44,7 @@ if __name__ == '__main__':
     with torch.no_grad():
         pred = model(x)
         assert(type(pred) == torch.Tensor)
+        assert(pred.shape == torch.Size([4, 2]))
         assert(np.allclose(pred.numpy(), output))
 ### END YOUR CODE
 
